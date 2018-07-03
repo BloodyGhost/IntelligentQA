@@ -10,10 +10,23 @@ Target Server Type    : MYSQL
 Target Server Version : 50553
 File Encoding         : 65001
 
-Date: 2018-07-03 16:19:38
+Date: 2018-07-03 16:42:28
 */
 
 SET FOREIGN_KEY_CHECKS=0;
+
+-- ----------------------------
+-- Table structure for ceshi
+-- ----------------------------
+DROP TABLE IF EXISTS `ceshi`;
+CREATE TABLE `ceshi` (
+  `id` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of ceshi
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for user
