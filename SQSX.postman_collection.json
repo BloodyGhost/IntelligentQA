@@ -1,0 +1,62 @@
+{
+	"info": {
+		"_postman_id": "bb52f9ed-24eb-4df8-9b90-fa4db925670a",
+		"name": "SQSX",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "注册账号",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "username",
+							"value": "guxueshan",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "123456789",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "type",
+							"value": "1",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "isdel",
+							"value": "0",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "127.0.0.1:8080/demodev/sqsxuser/save",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8080",
+					"path": [
+						"demodev",
+						"sqsxuser",
+						"save"
+					]
+				},
+				"description": "保存"
+			},
+			"response": []
+		}
+	]
+}
