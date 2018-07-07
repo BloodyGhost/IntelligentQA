@@ -14,6 +14,7 @@ public class SqsxUserService {
     private SqsxUserRepository repository;
 
     @Transactional
+    //事物操作！两个操作同时执行，不可中断
     public void insertTwo(String name, Integer pwd,Integer type,Integer isdel) {
         SqsxUser sqsxUserA = new SqsxUser();
         sqsxUserA.setUsername(name);
@@ -21,13 +22,13 @@ public class SqsxUserService {
         sqsxUserA.setType(type);
         sqsxUserA.setIsdel(isdel);
         repository.save(sqsxUserA);
-/*
+
         SqsxUser sqsxUserB = new SqsxUser();
         sqsxUserA.setUsername(name);
         sqsxUserA.setPassword(pwd);
         sqsxUserA.setType(type);
         sqsxUserA.setIsdel(isdel);
         repository.save(sqsxUserB);
-        */
+
     }
 }

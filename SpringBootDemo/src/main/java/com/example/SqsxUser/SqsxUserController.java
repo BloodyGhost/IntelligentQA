@@ -14,24 +14,17 @@ import static com.example.Utils.ToHash.toHash;
  * yutianran 2017/1/19 下午9:02
  */
 @RestController
-@RequestMapping("sqsxuser")
+@RequestMapping("/")
 public class SqsxUserController {
-
     @Autowired
     private SqsxUserRepository sqsxuserRepository;
-
     @Autowired
     private SqsxUserService sqsxUserService;
 
-    /**
-     * 通用的增删改查(JpaRepository自带)
-     *
-     * @return
-     */
-    @GetMapping("/")
-    public void a()
+    @RequestMapping("a")
+    public String a()
     {
-        System.out.println("hello");
+        return "hello";
     }
 
     @GetMapping("findAll")
@@ -46,24 +39,22 @@ public class SqsxUserController {
     }
 
     @PostMapping("sign/up")
-    public int save(@RequestParam("username") String username, @RequestParam("password") String password, @RequestParam("type") Integer type, @RequestParam("isdel") Integer isdel)
+    public int save(@RequestParam("username") String username, @RequestParam("password") String password, @RequestParam("type") Integer type)
     {//增加一个用户
-       // System.out.println("username=" + name + "\tpassword=" + password+ "\ttype=" + type+ "\tisdel=" + isdel);//验证一下是否正确得到数据
             if(findByUsername(username)!=null)
             {
                 return 300;
+
             }else {
                 SqsxUser sqsxUser = new SqsxUser();
                 sqsxUser.setUsername(username);
                 sqsxUser.setPassword(toHash(password));
                 sqsxUser.setType(type);
-                sqsxUser.setIsdel(isdel);
+                sqsxUser.setIsdel(0);
                 sqsxuserRepository.save(sqsxUser);
                 return 200;
-                //return sqsxuserRepository.save(sqsxUser);
             }
     }
-
     @PostMapping("findById")
     public SqsxUser findById(@RequestParam("id") Integer id) {
         return sqsxuserRepository.findById(id);
@@ -71,47 +62,26 @@ public class SqsxUserController {
 
     @PostMapping("sign/in")
     public int login(@RequestParam("username") String username, @RequestParam("password") String password) {//登陆，验证结果返回：-1表示失败，1表示成功
-        if (findByUsername(username) == null) {
-            return 300;
+
+        SqsxUser sqsxUser = sqsxuserRepository.findByUsername(username);
+        System.out.println(sqsxUser.getId()+sqsxUser.getUsername()+sqsxUser.getPassword()+sqsxUser.getType()+sqsxUser.getIsdel());
+        if (sqsxUser!= null && toHash(password) == sqsxUser.getPassword() && sqsxUser.getIsdel()!=1) {
+            return 200;
         } else {
-            SqsxUser sqsxUser = sqsxuserRepository.findByUsername(username);//根据用户名去苦中查找该用户
-            // if()
-            if (toHash(password) == sqsxUser.getPassword()) {
-                return 200;//用户名或密码输入对
-            } else {
                 return 300;
-            }
+        }
+      //return 1;
+    }
+    @PostMapping("profile/modifyPass")
+    public int update(@RequestParam("username") String username, @RequestParam("password") String password, @RequestParam("newpassword") String newpassword) {
+        SqsxUser sqsxUser = sqsxuserRepository.findByUsername(username);
+        if(toHash(password) == sqsxUser.getPassword() && sqsxUser.getIsdel()!=1)
+        {
+            sqsxUser.setPassword(toHash(newpassword));
+            sqsxuserRepository.save(sqsxUser);
+            return 200;//根据主键查找并更新
+        }else {
+            return 300;//密码输入错误
         }
     }
-
-//    @PostMapping("update")
-//    public SqsxUser update(@RequestParam("username") String name, @RequestParam("password") Integer pwd, @RequestParam("type") Integer type, @RequestParam("isdel") Integer isdel) {
-//        System.out.println("name=" + name + "\tpassword=" + pwd+ "\ttype=" + type+ "\tisdel=" + isdel);
-//        SqsxUser sqsxUser = new SqsxUser();
-//        sqsxUser.setUsername(name);
-//        sqsxUser.setPassword(pwd);
-//        sqsxUser.setType(type);
-//        sqsxUser.setIsdel(isdel);
-//        return sqsxuserRepository.save(sqsxUser);
-//    }
-//
-//
-//    @PostMapping("delete")
-//    public void delete(@RequestParam("id") Integer id) {
-//        System.out.println("id=" + id);
-//        sqsxuserRepository.delete(id);
-//    }
-
-    /**
-     * 自定义的操作
-     *
-     * @param username
-     * @return
-     */
-
-
-//    @PostMapping("addTwo")
-//    public void addTwo(@RequestParam("a") String a, @RequestParam("b") String b) {
-//        userService.insertTwo(a, b);
-//    }
 }
